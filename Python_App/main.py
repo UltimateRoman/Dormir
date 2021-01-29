@@ -1,6 +1,9 @@
 import json
+from cs50 import SQL
 from time import localtime, sleep
 from boltiot import Bolt
+
+db = SQL("sqlite:///maindb.db")
 
 api_key = "Your BOLT API key"
 device_id = "Your BOLT device ID"
@@ -20,15 +23,16 @@ def main():
             if read_data['value'] == 'start\n':
                 print(localtime().tm_hour)
                 alarm_on = True
+                
+            if localtime().tm_hour == 8 and alarm_on:
+                if not ring:
+                    bolt_inst.serialWrite('ring')
+                    ring = True
 
-            if alarm_on and read_data['value'] == 'stop\n':
+            if ring and read_data['value'] == 'stop\n':
                 print(localtime().tm_hour)
                 ring = False
                 alarm_on = False
-                
-            if localtime().tm_hour == 8 and alarm_on:
-                bolt_inst.serialWrite('ring')
-                ring = True
             
             sleep(15)
             
