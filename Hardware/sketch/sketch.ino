@@ -14,6 +14,9 @@ char light = A6;
 char sound = A2;
 
 bool standby = true;
+bool check = false;
+bool alarm_on = false;
+bool ring = false;
 
 
 void setup(void) {
@@ -33,11 +36,27 @@ void loop(void) {
   float temp = dht.readTemperature();
   int li = analogRead(light);
   int so = analogRead(sound);
-  int b = digitalRead(button);
-  if(b) {
-    tone(buzz, 300);
-    delay(1000);
-    noTone(buzz);
+  int bp = digitalRead(button);
+  if(bp) {
+    delay(200);
+    if(bp) {
+      if(standby) {
+        standby = false;
+        check = true; 
+      }
+      else if(check) {
+        check = false;
+        alarm_on = true;
+        Serial.println("start");
+      }
+      else if(alarm_on) {
+        alarm_on = false;
+        ring = false;
+        standby = true;
+        Serial.println("stop");
+      }
+      u8x8.clear();
+    }
   }
   if(standby) {
     uint8_t tiles[8] = { 1, 3, 7, 15, 31, 63, 127, 255};
@@ -49,12 +68,9 @@ void loop(void) {
     u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
     u8x8.draw2x2String(2, 5, "DORMIR");  
   }
-  else {
+  else if(check) {
+    u8x8.clear();
     u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
-    u8x8.drawGlyph(0, 0, 'A');
-    u8x8.setCursor(8, 7);
-    u8x8.print(u8x8.getRows());
-    u8x8.setFont(u8x8_font_chroma48medium8_r);
     u8x8.setCursor(0, 0);
     u8x8.print("Room Light:");
     u8x8.print(li);
@@ -66,7 +82,31 @@ void loop(void) {
     u8x8.print("Noise:");
     u8x8.print(so);
     u8x8.setCursor(0, 6);
-    u8x8.print(b);
+    delay(5000);
+    u8x8.clear();
+    u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+    u8x8.setCursor(0, 0);
+    u8x8.print("Ambient");
+    u8x8.setCursor(0, 2);
+    u8x8.print("conditions for");
+    u8x8.setCursor(0, 4);
+    u8x8.print("sleep detected:)");
+    u8x8.setCursor(0, 6);
+    u8x8.print("Good Night!");
+    delay(5000);
+  }
+  else if (alarm_on) {
+    u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+    u8x8.draw2x2String(3, 1, "ALARM"); 
+    u8x8.draw2x2String(6, 5, "ON");
+    if(msg.compareTo("ring")==0) {
+      ring = true;
+    }
+    if(ring) {
+      tone(buzz, 300);
+      delay(1000);
+      noTone(buzz);
+    }
   }
   u8x8.refreshDisplay();  
   delay(200);
