@@ -5,8 +5,8 @@ from boltiot import Bolt
 
 db = SQL("sqlite:///maindb.db")
 
-api_key = "9c8c9edd-132b-4d96-a92b-0089580ebd1a"
-device_id = "BOLT7420916"
+api_key = "Your BOLT API Key"
+device_id = "Your BOLT device ID"
 uname = input("Enter DORMIR username: ")
 
 bolt_inst = Bolt(api_key, device_id)
@@ -29,17 +29,15 @@ def main():
                     db.execute("INSERT INTO records(date, in_hour, in_min, out_hour, out_min) VALUES(current_date, :hour, :mins, 0, 0)", hour=localtime().tm_hour, mins=localtime().tm_min)
 
             else:
-                print(alarm_on)
                 wakeup_time = db.execute("SELECT wtime FROM users WHERE username=:username",username=uname)[0]['wtime']
                 if localtime().tm_hour >= wakeup_time and alarm_on:
                     if not ring:
-                        print("ringin")
                         bolt_inst.serialWrite('ring')
                         ring = True
 
                 if ring and read_data['value'] == 'stop\n':
                     rc = db.execute("SELECT COUNT(*) FROM records")[0]['COUNT(*)']
-                    db.execute("UPDATE records SET out_hour=:ohr, out_min=:omin WHERE id=:idc", ohr=localtime().tm_hour, omin=localtime().tm_min, idc=rc+5)
+                    db.execute("UPDATE records SET out_hour=:ohr, out_min=:omin WHERE id=:idc", ohr=localtime().tm_hour, omin=localtime().tm_min, idc=rc)
                     ring = False
                     alarm_on = False
             
