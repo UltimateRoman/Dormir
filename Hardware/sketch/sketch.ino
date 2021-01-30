@@ -129,7 +129,7 @@ void loop(void) {
       u8x8.draw1x2String(5, 4, "SHINE!");
       u8x8.drawTile(8, 7, 1, tiles3);
     }
-    if(msg.compareTo("ring\n")==0) {
+    if(msg.compareTo("ring")==0) {
       ring = true;
     }
     if(ring) {
