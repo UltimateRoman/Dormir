@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dormir</title>
+    <meta name="description" content="Helping people fix their sleep schedules!">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="/static/css/styles.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
+    <link rel="icon" href="/static/img/sleep.png" type="image/gif" sizes="24x24">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+        <div class="container"><a class="navbar-brand" href="/">Dormir</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navbarResponsive"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="/view">View</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+       
+        <h1 style="padding-top: 10%; text-align: center; color:cadetblue">Setup</h1>
+            
+        <div class="container">
+            <center> 
+                <form action="/" method="post">
+                    
+                    <div class="container">
+                        <br/><br/>
+                      <input type="text" class="form-control"  placeholder="Enter a Username" name="username" required>
+                      <br/><br/>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1" style="font-size: large;"><b>Select your daily Wake Up time</b></label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="time">
+                          <option value="6">6:00 am</option>
+                          <option value="7">7:00 am</option>
+                          <option value="8">8:00 am</option>
+                          <option value="9">9:00 am</option>
+                          <option value="10">10:00 am</option>
+                          <option value="11">11:00 am</option>
+                        </select>
+                      </div>       
+                      
+                      <br/><br/>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </form>
+                  <br/><br/>
+                  <label for="exampleFormControlSelect1" style="font-size: large;"><b>NOTE: Being consistent with your sleep and waking times can aid long-term sleep quality</b></label>
+
+            </center>
+            
+        </div>
+    </main>
+</body>
+</html>
