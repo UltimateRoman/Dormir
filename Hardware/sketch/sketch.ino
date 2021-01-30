@@ -17,6 +17,7 @@ bool standby = true;
 bool check = false;
 bool alarm_on = false;
 bool ring = false;
+bool woke_up = false;
 
 
 void setup(void) {
@@ -52,12 +53,17 @@ void loop(void) {
       else if(alarm_on) {
         alarm_on = false;
         ring = false;
-        standby = true;
+        woke_up = true;
         Serial.println("stop");
+      }
+      else if(woke_up) {
+        woke_up = false;
+        standby = true;
       }
       u8x8.clear();
     }
   }
+  
   if(standby) {
     uint8_t tiles[8] = { 1, 3, 7, 15, 31, 63, 127, 255};
     uint8_t tiles2[8] = { 255, 127, 63, 31, 15, 7, 3, 1};
@@ -68,38 +74,62 @@ void loop(void) {
     u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
     u8x8.draw2x2String(2, 5, "DORMIR");  
   }
+  
   else if(check) {
     u8x8.clear();
     u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
     u8x8.setCursor(0, 0);
     u8x8.print("Room Light:");
     u8x8.print(li);
-    u8x8.setCursor(0, 2);
+    u8x8.setCursor(0, 3);
     u8x8.print("Room Temp:");
     u8x8.print(temp);
     u8x8.print("C");
-    u8x8.setCursor(0, 4);
+    u8x8.setCursor(0, 6);
     u8x8.print("Noise:");
     u8x8.print(so);
-    u8x8.setCursor(0, 6);
-    delay(5000);
+    delay(3000);
     u8x8.clear();
-    u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
-    u8x8.setCursor(0, 0);
-    u8x8.print("Ambient");
-    u8x8.setCursor(0, 2);
-    u8x8.print("conditions for");
-    u8x8.setCursor(0, 4);
-    u8x8.print("sleep detected:)");
-    u8x8.setCursor(0, 6);
-    u8x8.print("Good Night!");
-    delay(5000);
+    if(temp>25.00) {
+      u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+      u8x8.setCursor(0, 0);
+      u8x8.print("High room Temp");
+      u8x8.setCursor(0, 2);
+      u8x8.print("Consider taking");
+      u8x8.setCursor(0, 4);
+      u8x8.print("a bath  :)");
+      u8x8.setCursor(0, 6);
+      u8x8.print("Good Night!");
+    }
+    else {
+      u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+      u8x8.setCursor(0, 0);
+      u8x8.print("Ambient");
+      u8x8.setCursor(0, 2);
+      u8x8.print("conditions for");
+      u8x8.setCursor(0, 4);
+      u8x8.print("sleep detected:)");
+      u8x8.setCursor(0, 6);
+      u8x8.print("Good Night!");
+    }
+    delay(3000);
   }
+  
   else if (alarm_on) {
-    u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
-    u8x8.draw2x2String(3, 1, "ALARM"); 
-    u8x8.draw2x2String(6, 5, "ON");
-    if(msg.compareTo("ring")==0) {
+    if(!ring) {
+      u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+      u8x8.draw2x2String(3, 1, "ALARM"); 
+      u8x8.draw2x2String(4, 5, "MODE");
+    }
+    else {
+      u8x8.clear();
+      uint8_t tiles3[8] = { 255, 255, 255, 255, 255, 255, 255, 255};
+      u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+      u8x8.draw1x2String(4, 1, "RISE AND"); 
+      u8x8.draw1x2String(5, 4, "SHINE!");
+      u8x8.drawTile(8, 7, 1, tiles3);
+    }
+    if(msg.compareTo("ring\n")==0) {
       ring = true;
     }
     if(ring) {
@@ -107,6 +137,21 @@ void loop(void) {
       delay(1000);
       noTone(buzz);
     }
+  }
+  
+  else if(woke_up) {
+    u8x8.clear();
+    u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+    u8x8.draw1x2String(0, 0, "Get some"); 
+    u8x8.draw1x2String(0, 3, "Sunlight for");
+    u8x8.draw1x2String(0, 6, "2 minutes");
+    delay(5000);
+    u8x8.clear();
+    u8x8.setFont(u8x8_font_amstrad_cpc_extended_r);
+    u8x8.draw1x2String(5, 0, "Take 5"); 
+    u8x8.draw1x2String(4, 3, "push-ups");
+    u8x8.draw1x2String(3, 6, "right now!");
+    delay(3000);
   }
   u8x8.refreshDisplay();  
   delay(200);
