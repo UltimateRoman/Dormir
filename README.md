@@ -16,7 +16,7 @@ A project which aims to help people fix their broken sleep schedules
 
  <br />
  
-![circuit](Hardware/Module.jpeg?raw=true)
+![circuit](Hardware/Module.jpg?raw=true)
 
 <br/>
 
