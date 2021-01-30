@@ -21,24 +21,25 @@ def main():
             read_resp = bolt_inst.serialRead('10')
             read_data = json.loads(read_resp)            
 
-            check_in = db.execute("SELECT in-hour FROM records WHERE date=CURRENT_DATE")
+            check_in = db.execute("SELECT in_hour FROM records WHERE date=CURRENT_DATE")
 
             if not check_in:
                 if read_data['value'] == 'start\n':
-                    db.execute("INSERT INTO records(date, in-hour, in-min) VALUES(current_date, :hour, :mins)", hour=localtime().tm_hour, mins=localtime().tm_min)
                     alarm_on = True
+                    db.execute("INSERT INTO records(date, in_hour, in_min, out_hour, out_min) VALUES(current_date, :hour, :mins, 0, 0)", hour=localtime().tm_hour, mins=localtime().tm_min)
 
             else:
+                print(alarm_on)
                 wakeup_time = db.execute("SELECT wtime FROM users WHERE username=:username",username=uname)[0]['wtime']
-
                 if localtime().tm_hour >= wakeup_time and alarm_on:
                     if not ring:
+                        print("ringin")
                         bolt_inst.serialWrite('ring')
                         ring = True
 
                 if ring and read_data['value'] == 'stop\n':
                     rc = db.execute("SELECT COUNT(*) FROM records")[0]['COUNT(*)']
-                    db.execute("UPDATE records SET out-hour=:ohr AND out-min=:omin WHERE id=:id", ohr=localtime().tm_hour, omin=localtime().tm_min, id=rc)
+                    db.execute("UPDATE records SET out_hour=:ohr, out_min=:omin WHERE id=:idc", ohr=localtime().tm_hour, omin=localtime().tm_min, idc=rc+5)
                     ring = False
                     alarm_on = False
             
