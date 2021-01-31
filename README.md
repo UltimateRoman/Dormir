@@ -29,6 +29,47 @@ It can function as a sleep monitor and logs the time when the user hits the bed 
 
 The web-app helps user view their sleeping pattern trends over the days, based on the data recorded by the device. This will help them analyze what had gone wrong on particular days and take action to not repeat the same.
 
+
+
+
+
+## Setup Dormir
+
+### Hardware setup
+
+- Connnect the components according to the circuit shown below at a convenient location and connect to power.
+
+ <br />
+ 
+![circuit](Hardware/Module.jpg?raw=true)
+
+<br/>
+
+- Upload the [sketch](Hardware/sketch/sketch.ino) onto your Arduino Uno.
+
+
+### Clone the repo
+
+```
+$ git clone https://github.com/UltimateRoman/Dormir
+$ cd Dormir
+```
+
+### Install dependencies
+
+```
+$ cd Flask_App
+$ pip install -r requirements.txt
+```
+### Run the Web-App
+
+```
+$ python app.py
+```
+
+- Visit locahost:5000 in your web browser and enjoy the Dormir experience.
+
+
 ## How we built it
 
 The web-app was built using HTML, CSS, Bootstrap for the front-end, and Flask and SQLite for the back-end.
@@ -68,41 +109,3 @@ The web-app was built using HTML, CSS, Bootstrap for the front-end, and Flask an
 3. Designing a more compact hardware module.
 
 3. Better UI/UX to help facilitate adoption among the masses.
-
-
-
-## Setup Dormir
-
-### Hardware setup
-
-- Connnect the components according to the circuit shown below at a convenient location and connect to power.
-
- <br />
- 
-![circuit](Hardware/Module.jpg?raw=true)
-
-<br/>
-
-- Upload the [sketch](Hardware/sketch/sketch.ino) onto your Arduino Uno.
-
-
-### Clone the repo
-
-```
-$ git clone https://github.com/UltimateRoman/Dormir
-$ cd Dormir
-```
-
-### Install dependencies
-
-```
-$ cd Flask_App
-$ pip install -r requirements.txt
-```
-### Run the Web-App
-
-```
-$ python app.py
-```
-
-- Visit locahost:5000 in your web browser and enjoy the Dormir experience.
