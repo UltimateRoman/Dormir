@@ -1,4 +1,9 @@
 # Dormir
+<br/>
+
+![mainpic](Poster.png?raw=true)
+
+<br/>
 
 ## Inspiration
 
@@ -22,11 +27,7 @@ The web-app helps user view their sleeping pattern trends over the days, based o
 
 
 
-<br/>
 
-![mainpic](Poster.png?raw=true)
-
-<br/>
 
 A project which aims to help people fix their broken sleep schedules
 
